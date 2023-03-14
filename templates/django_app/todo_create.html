@@ -1,0 +1,112 @@
+{% load app_django_extras %}
+{% load static %}
+
+
+{% block head %}{% endblock head %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <div class="container-fluid">
+      <li style="margin-right: 15px;">
+                                  <img src="{{ user.profile.image.url }}" alt="Generic placeholder image" class="img-fluid " style="width: 50px; height: 50px; z-index: 1; border-radius: 100%; margin-top: 5px">
+          {% if user.is_authenticated %}
+            <a href="{% url 'django_app:profile' %}" type="button" class="btn btn-outline-Success me-2">Profile({{ user.username}})</a>
+        {% else %}
+            <a href="{% url 'django_app:profile' %}" type="button" class="btn btn-outline-primary me-2">Profile(anonymous)</a>
+        {% endif %}
+          </li>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+        </li>
+        <a href="{% url 'django_app:home_main' %}" class="btn btn-outline-primary" type="submit" style="margin-right: 8px;">Home</a>
+        <a href="{% url 'django_app:post_list' %}" class="btn btn-outline-primary" type="submit" style="margin-left: 15px;">All posts</a>
+      </ul>
+      <form class="d-flex">
+        <div class="text-end">
+          {% if user.is_authenticated %}
+              <a href="{% url 'django_app:logout' %}" type="button" class="btn btn-outline-danger me-2">Logout</a>
+          {% else %}
+              <a href="{% url 'django_app:login' %}" type="button" class="btn btn-outline-primary me-2">Login(anonymous)</a>
+          {% endif %}
+          </div>
+      </form>
+    </div>
+  </div>
+</nav>
+<h1 align="center">Create your todo!</h1>
+
+<div align="center">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font_awesome_6_0_0/css/all.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font_zen/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+<div class="container shadow-lg m-0 p-0">
+    <div class="shadow border-bottom">
+        <div class="d-flex text-start">
+            <a class="text-decoration-none lead btn btn-sm btn-outline-primary m-1 p-2" href="{% url 'django_app:todo_read_list' %}">
+                <= all todos <i class="btn btn-sm btn-dark bg-opacity-50 badge rounded-pill">{{ todo_count }}</i>
+            </a>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-1 row-cols-lg-1 custom-background-transparent-middle m-0 p-0">
+        <form action="{% url 'django_app:todo_create' %}"
+                  method="POST"
+                  target="_self"
+                  enctype="multipart/form-data"
+                  name="idea_create"
+                  autocomplete="on"
+                  class="text-center"
+        >
+            {% csrf_token %}
+            <div>
+                <div>
+                    <label class="form-control-sm w-50 m-1">
+                        Title:
+                        <input type="text"
+                               name="title"
+                               required=""
+                               placeholder="input 'title' here..."
+                               value=""
+                               minlength="1"
+                               maxlength="300"
+                               class="form-control form-control-sm"
+                        />
+                        <small class="text-muted">chars count: <= 300</small>
+                    </label>
+                    <label class="form-control-sm w-75 m-1">
+                        Description:
+                        <textarea type="text"
+                                  name="description"
+                                  required=""
+                                  placeholder="input 'description' here..."
+                                  minlength="1"
+                                  maxlength="3000"
+                                  rows="3"
+                                  class="form-control form-control-sm"
+                        ></textarea>
+                        <small class="text-muted">chars count: <= 3000</small>
+                    </label>
+                </div>
+            </div>
+            <hr/>
+            <div class="container-fluid text-center">
+                <ul class="row row-cols-auto row-cols-md-auto row-cols-lg-auto nav justify-content-center">
+                    <li class="m-1">
+                        <button class="btn btn-sm btn-outline-primary" type="submit">submit</button>
+                    </li>
+                    <li class="m-1">
+                        <button class="btn btn-sm btn-outline-warning" type="reset">reset</button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>
+
+</div>
+
+{% block prescript %}{% endblock prescript %}
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    {% block postscript %}{% endblock postscript %}
