@@ -194,20 +194,20 @@ CHOICES = (
 )
 
 
-class Logging(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=False, db_index=True)
-    method = models.CharField(max_length=7)
-    status = models.IntegerField(validators=[MinValueValidator(100), MaxValueValidator(600)])
-    url = models.CharField(max_length=300, default="")
-    description = models.CharField(max_length=500)
-    datetime = models.DateTimeField(default=timezone.now, db_index=True)
-    level = models.CharField(max_length=50, choices=CHOICES, default="4")
-
-    class Meta:
-        app_label = 'django_app'
-        ordering = ('-datetime', 'url')
-        verbose_name = 'Log'
-        verbose_name_plural = 'Logs'
-
-    def __str__(self):
-        return f"{self.datetime} | {self.status} | {self.url} | {self.user}"
+# class Logging(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=False, db_index=True)
+#     method = models.CharField(max_length=7)
+#     status = models.IntegerField(validators=[MinValueValidator(100), MaxValueValidator(600)])
+#     url = models.CharField(max_length=300, default="")
+#     description = models.CharField(max_length=500)
+#     datetime = models.DateTimeField(default=timezone.now, db_index=True)
+#     level = models.CharField(max_length=50, choices=CHOICES, default="4")
+#
+#     class Meta:
+#         app_label = 'django_app'
+#         ordering = ('-datetime', 'url')
+#         verbose_name = 'Log'
+#         verbose_name_plural = 'Logs'
+#
+#     def __str__(self):
+#         return f"{self.datetime} | {self.status} | {self.url} | {self.user}"

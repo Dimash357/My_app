@@ -59,54 +59,54 @@ admin.site.register(models.PostComment)
 admin.site.register(models.PostLike)
 
 
-class LogAdmin(admin.ModelAdmin):
-    list_display = (
-        'user',
-        'method',
-        'status',
-        'url',
-        'description',
-        'level',
-        'datetime',
-    )
-    list_display_links = (
-        'user',
-        'method',
-        'status',
-        'url',
-    )
-    list_editable = (
-        'level',
-    )
-    list_filter = (
-        'user',
-        'method',
-        'status',
-        'url',
-        'description',
-        'datetime',
-        'level',
-    )
-    fieldsets = (
-        ('Main', {'fields': (
-            'user',
-            'method',
-            'status',
-            'url',
-            'description',
-            'datetime',
-            'level',
-        )}),
-    )
-    search_fields = [
-        'user',
-        'method',
-        'status',
-        'url',
-        'description',
-        'datetime',
-        'level',
-    ]
-
-
-admin.site.register(models.Logging, LogAdmin)
+# class LogAdmin(admin.ModelAdmin):
+#     list_display = (
+#         'user',
+#         'method',
+#         'status',
+#         'url',
+#         'description',
+#         'level',
+#         'datetime',
+#     )
+#     list_display_links = (
+#         'user',
+#         'method',
+#         'status',
+#         'url',
+#     )
+#     list_editable = (
+#         'level',
+#     )
+#     list_filter = (
+#         'user',
+#         'method',
+#         'status',
+#         'url',
+#         'description',
+#         'datetime',
+#         'level',
+#     )
+#     fieldsets = (
+#         ('Main', {'fields': (
+#             'user',
+#             'method',
+#             'status',
+#             'url',
+#             'description',
+#             'datetime',
+#             'level',
+#         )}),
+#     )
+#     search_fields = [
+#         'user',
+#         'method',
+#         'status',
+#         'url',
+#         'description',
+#         'datetime',
+#         'level',
+#     ]
+#
+#
+# admin.site.register(models.Logging, LogAdmin)

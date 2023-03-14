@@ -12,44 +12,44 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.utils import timezone
 
 
-def logging(controller_func):
-    def wrapper(*args, **kwargs):
-        print(args, kwargs)
-        request: WSGIRequest = args[0]
-        print(request.META)
-
-        models.Logging.objects.create(
-            user=request.user,
-            method=request.method,
-            status=0,
-            url="",
-            description="init"
-        )
-        try:
-            response: HttpResponse = controller_func(*args, **kwargs)
-            if settings.DEBUG_LOG:
-                models.Logging.objects.create(
-                    user=request.user,
-                    method=request.method,
-                    status=200,
-                    url="",
-                    description="Response: " + str(response.content)
-                )
-            return response
-        except Exception as error:
-            models.Logging.objects.create(
-                user=request.user,
-                method=request.method,
-                status=500,
-                url="",
-                description="Error: " + str(error)
-            )
-            context = {"detail": str(error)}
-            if str(error).find("query does not exist"):
-                context["extra"] = "Такого объекта не существует"
-            return render(request, "components/error.html", context=context)
-
-    return wrapper
+# def logging(controller_func):
+#     def wrapper(*args, **kwargs):
+#         print(args, kwargs)
+#         request: WSGIRequest = args[0]
+#         print(request.META)
+#
+#         models.Logging.objects.create(
+#             user=request.user,
+#             method=request.method,
+#             status=0,
+#             url="",
+#             description="init"
+#         )
+#         try:
+#             response: HttpResponse = controller_func(*args, **kwargs)
+#             if settings.DEBUG_LOG:
+#                 models.Logging.objects.create(
+#                     user=request.user,
+#                     method=request.method,
+#                     status=200,
+#                     url="",
+#                     description="Response: " + str(response.content)
+#                 )
+#             return response
+#         except Exception as error:
+#             models.Logging.objects.create(
+#                 user=request.user,
+#                 method=request.method,
+#                 status=500,
+#                 url="",
+#                 description="Error: " + str(error)
+#             )
+#             context = {"detail": str(error)}
+#             if str(error).find("query does not exist"):
+#                 context["extra"] = "Такого объекта не существует"
+#             return render(request, "components/error.html", context=context)
+#
+#     return wrapper
 
 
 class CustomPaginator:
@@ -76,7 +76,7 @@ class HomeView(View):  # TODO контроллер класс
         context = {}
         return render(request, 'django_app/home.html', context=context)
 
-@logging
+# @logging
 def home_view(request: HttpRequest) -> HttpResponse:  # TODO контроллер функция
     context = {}
     return render(request, 'django_app/home.html', context=context)
@@ -86,11 +86,11 @@ def home_main(request: HttpRequest) -> HttpResponse:
     context = {}
     return render(request, 'django_app/home_main.html', context=context)
 
-@logging
+# @logging
 def profile(request):
     return render(request, 'django_app/profile.html')
 
-@logging
+# @logging
 def profileupdate(request):
     if request.method == 'POST':
         pform = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
@@ -101,7 +101,7 @@ def profileupdate(request):
         pform = ProfileUpdateForm(instance=request.user.profile)
     return render(request, 'django_app/profileupdate.html', {'pform': pform})
 
-@logging
+# @logging
 def register(request):
     if request.method == "POST":
         username = request.POST.get("username", "")
@@ -113,7 +113,7 @@ def register(request):
         return redirect(reverse('django_app:home', args=()))
     return render(request, 'django_app/register.html', context={})
 
-@logging
+# @logging
 def login_(request):
     if request.method == "POST":
         username = request.POST.get("username", "")
@@ -126,12 +126,12 @@ def login_(request):
             raise Exception("Логин или пароль не верны!")
     return render(request, 'django_app/login.html')
 
-@logging
+# @logging
 def logout_f(request):
     logout(request)
     return redirect(reverse('django_app:login', args=()))
 
-@logging
+# @logging
 def post_create(request: HttpRequest) -> HttpResponse:
     if request.method == "GET":
         context = {}
@@ -151,7 +151,7 @@ def post_create(request: HttpRequest) -> HttpResponse:
         )
         return redirect(reverse('django_app:post_list', args=()))
 
-@logging
+# @logging
 def post_list(request: HttpRequest) -> HttpResponse:
     posts = models.Post.objects.all()
 
@@ -173,7 +173,7 @@ def post_list(request: HttpRequest) -> HttpResponse:
     context = {"page_posts": page_posts, "users": User.objects.all()}
     return render(request, 'django_app/post_list.html', context=context)
 
-@logging
+# @logging
 def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
     post = models.Post.objects.get(id=pk)
     post_comment = models.PostComment.objects.filter(article=post)
@@ -182,7 +182,7 @@ def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
                }
     return render(request, 'django_app/post_detail.html', context=context)
 
-@logging
+# @logging
 def post_delete(request: HttpRequest, pk: int) -> HttpResponse:
     post = models.Post.objects.get(id=pk)
     post.delete()
@@ -209,7 +209,7 @@ def post_ph(request, post_id=None):
     return render(request, 'django_app/post_detail.html', context)
 
 
-@logging
+# @logging
 def post_comment_create(request, pk):
     models.PostComment.objects.create(
         article=models.Post.objects.get(id=pk),
